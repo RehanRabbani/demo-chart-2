@@ -1,12 +1,475 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Document</title>
-</head>
-<body>
-    strat
-</body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+      integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+      integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="script.js"></script>
+    <style>
+      .displayOuter {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-evenly;
+        width: 60%;
+        padding-top: 1rem;
+        height: 60%;
+      }
+      button {
+        margin-left: 0.5rem;
+        margin-top: 1rem;
+        margin-right: 0.5rem;
+      }
+      section {
+        display: flex;
+        justify-content: space-between;
+      }
+      @media only screen and (max-width: 600px) {
+        .displayOuter {
+          width: 100%;
+          height: 60%;
+          display: flex;
+          justify-content: space-evenly;
+          flex-wrap: wrap;
+        }
+        section {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: flex-start;
+        }
+      }
+    </style>
+  </head>
+  <body onload="getData()">
+    <div class="displayOuter">
+      <canvas id="myChart" width="400" height="400"></canvas>
+
+      <section>
+        <button type="button" class="btn btn-primary" id="CoinbasePro">
+          CoinbasePro
+        </button>
+
+        <button type="button" class="btn btn-primary" id="Binance">
+          Binance
+        </button>
+        <button type="button" class="btn btn-primary" id="Kraken">
+          Kraken
+        </button>
+        <button type="button" class="btn btn-primary" id="Bitfinex">
+          Bitfinex
+        </button>
+        <button type="button" class="btn btn-primary" id="Bitmex">
+          Bitmex
+        </button>
+        <button type="button" class="btn btn-primary" id="OkCoin">
+          OkCoin
+        </button>
+        <button type="button" class="btn btn-primary" id="Poloniex">
+          Poloniex
+        </button>
+        <button type="button" class="btn btn-primary" id="Idex">Idex</button>
+
+        <button type="button" class="btn btn-danger" id="add">Add data</button>
+      </section>
+    </div>
+    <script>
+      function getData() {
+        let data;
+        fetch("data.json")
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(data) {
+            console.log("succes" + data.exchanges[0].name);
+
+            let json;
+            var ctx = document.getElementById("myChart").getContext("2d");
+            var myChart = new Chart(ctx, {
+              type: "line",
+              data: {
+                labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+                datasets: [
+                  {
+                    label: "",
+                    data: [],
+                    backgroundColor: ["rgba(166, 206, 227, 1)"],
+                    borderColor: ["rgba(31, 120, 180, 1)"],
+                    borderWidth: 1
+                  },
+                  {
+                    label: "",
+                    data: [],
+                    backgroundColor: ["rgba(178, 223, 138, 1)"],
+                    borderColor: ["rgba(51, 160, 44, 1)"],
+                    borderWidth: 1
+                  },
+                  {
+                    label: "",
+                    data: [],
+                    backgroundColor: ["rgba(251, 154, 153, 1)"],
+                    borderColor: ["rgba(227, 26, 28, 1)"],
+                    borderWidth: 1
+                  },
+                  {
+                    label: "",
+                    data: [],
+                    backgroundColor: ["rgba(202, 178, 214, 1)"],
+                    borderColor: ["rgba(106, 61, 154, 1)"],
+                    borderWidth: 1
+                  }
+                ]
+              },
+
+              options: {
+                scales: {
+                  yAxes: [
+                    {
+                      stacked: true,
+                      ticks: {
+                        beginAtZero: true
+                      }
+                    }
+                  ]
+                  // xAxes:[{
+                  //     stacked: true,
+                  //     ticks: {
+                  //         beginAtZero: true
+                  //     }
+
+                  //  }]
+                }
+              }
+            });
+            for (let k = 0; k < data.exchanges.length; k++) {
+              if (data.exchanges[k].name === "CoinbasePro") {
+                document
+                  .getElementById(`${data.exchanges[k].name}`)
+                  .addEventListener("click", function() {
+                    for (
+                      let i = 0;
+                      i < data.exchanges[k].orderbook.Bids.length;
+                      i++
+                    ) {
+                      myChart.data.datasets[0].data.push(
+                        data.exchanges[k].orderbook.Asks[i].price
+                      );
+                      myChart.data.datasets[1].data.push(
+                        data.exchanges[k].orderbook.Asks[i].qty
+                      );
+                      myChart.data.datasets[2].data.push(
+                        data.exchanges[k].orderbook.Bids[i].price
+                      );
+                      myChart.data.datasets[3].data.push(
+                        data.exchanges[k].orderbook.Bids[i].qty
+                      );
+                      myChart.data.datasets[0].label = "CoinbasePro Asks Price";
+                      myChart.data.datasets[1].label = "CoinbasePro Asks Qty";
+                      myChart.data.datasets[2].label = "CoinbasePro Bids Price";
+                      myChart.data.datasets[3].label = "CoinbasePro Bids Qty";
+
+                      console.log(data.exchanges[k].orderbook.Asks[i].price);
+                      console.log(data.exchanges[k].orderbook.Asks[i].qty);
+                      console.log(data.exchanges[k].name);
+                      console.log(i);
+                    }
+
+                    myChart.update();
+                  });
+              }
+              if (data.exchanges[k].name === "Binance") {
+                document
+                  .getElementById(`${data.exchanges[k].name}`)
+                  .addEventListener("click", function() {
+                    for (
+                      let i = 0;
+                      i < data.exchanges[k].orderbook.Bids.length;
+                      i++
+                    ) {
+                      myChart.data.datasets[0].data.push(
+                        data.exchanges[k].orderbook.Asks[i].price
+                      );
+                      myChart.data.datasets[1].data.push(
+                        data.exchanges[k].orderbook.Asks[i].qty
+                      );
+                      myChart.data.datasets[2].data.push(
+                        data.exchanges[k].orderbook.Bids[i].price
+                      );
+                      myChart.data.datasets[3].data.push(
+                        data.exchanges[k].orderbook.Bids[i].qty
+                      );
+                      myChart.data.datasets[0].label = "Binance Asks Price";
+                      myChart.data.datasets[1].label = "Binance Asks Qty";
+                      myChart.data.datasets[2].label = "Binance Bids Price";
+                      myChart.data.datasets[3].label = "Binance Bids Qty";
+
+                      console.log(data.exchanges[k].orderbook.Asks[i].price);
+                      console.log(data.exchanges[k].orderbook.Asks[i].qty);
+                      console.log(data.exchanges[k].name);
+                      console.log(i);
+                    }
+
+                    myChart.update();
+                  });
+              }
+              if (data.exchanges[k].name === "Kraken") {
+                document
+                  .getElementById(`${data.exchanges[k].name}`)
+                  .addEventListener("click", function() {
+                    for (
+                      let i = 0;
+                      i < data.exchanges[k].orderbook.Bids.length;
+                      i++
+                    ) {
+                      myChart.data.datasets[0].data.push(
+                        data.exchanges[k].orderbook.Asks[i].price
+                      );
+                      myChart.data.datasets[1].data.push(
+                        data.exchanges[k].orderbook.Asks[i].qty
+                      );
+                      myChart.data.datasets[2].data.push(
+                        data.exchanges[k].orderbook.Bids[i].price
+                      );
+                      myChart.data.datasets[3].data.push(
+                        data.exchanges[k].orderbook.Bids[i].qty
+                      );
+                      myChart.data.datasets[0].label = "Kraken Asks Price";
+                      myChart.data.datasets[1].label = "Kraken Asks Qty";
+                      myChart.data.datasets[2].label = "Kraken Bids Price";
+                      myChart.data.datasets[3].label = "Kraken Bids Qty";
+
+                      console.log(data.exchanges[k].orderbook.Asks[i].price);
+                      console.log(data.exchanges[k].orderbook.Asks[i].qty);
+                      console.log(data.exchanges[k].name);
+                      console.log(i);
+                    }
+
+                    myChart.update();
+                  });
+              }
+              if (data.exchanges[k].name === "Bitfinex") {
+                document
+                  .getElementById(`${data.exchanges[k].name}`)
+                  .addEventListener("click", function() {
+                    for (
+                      let i = 0;
+                      i < data.exchanges[k].orderbook.Bids.length;
+                      i++
+                    ) {
+                      myChart.data.datasets[0].data.push(
+                        data.exchanges[k].orderbook.Asks[i].price
+                      );
+                      myChart.data.datasets[1].data.push(
+                        data.exchanges[k].orderbook.Asks[i].qty
+                      );
+                      myChart.data.datasets[2].data.push(
+                        data.exchanges[k].orderbook.Bids[i].price
+                      );
+                      myChart.data.datasets[3].data.push(
+                        data.exchanges[k].orderbook.Bids[i].qty
+                      );
+                      myChart.data.datasets[0].label = "Bitfinex Asks Price";
+                      myChart.data.datasets[1].label = "Bitfinex Asks Qty";
+                      myChart.data.datasets[2].label = "Bitfinex Bids Price";
+                      myChart.data.datasets[3].label = "Bitfinex Bids Qty";
+
+                      console.log(data.exchanges[k].orderbook.Asks[i].price);
+                      console.log(data.exchanges[k].orderbook.Asks[i].qty);
+                      console.log(data.exchanges[k].name);
+                      console.log(i);
+                    }
+
+                    myChart.update();
+                  });
+              }
+              if (data.exchanges[k].name === "Bitmex") {
+                document
+                  .getElementById(`${data.exchanges[k].name}`)
+                  .addEventListener("click", function() {
+                    for (
+                      let i = 0;
+                      i < data.exchanges[k].orderbook.Bids.length;
+                      i++
+                    ) {
+                      myChart.data.datasets[0].data.push(
+                        data.exchanges[k].orderbook.Asks[i].price
+                      );
+                      myChart.data.datasets[1].data.push(
+                        data.exchanges[k].orderbook.Asks[i].qty
+                      );
+                      myChart.data.datasets[2].data.push(
+                        data.exchanges[k].orderbook.Bids[i].price
+                      );
+                      myChart.data.datasets[3].data.push(
+                        data.exchanges[k].orderbook.Bids[i].qty
+                      );
+                      myChart.data.datasets[0].label = "Bitmex Asks Price";
+                      myChart.data.datasets[1].label = "Bitmex Asks Qty";
+                      myChart.data.datasets[2].label = "Bitmex Bids Price";
+                      myChart.data.datasets[3].label = "Bitmex Bids Qty";
+
+                      console.log(data.exchanges[k].orderbook.Asks[i].price);
+                      console.log(data.exchanges[k].orderbook.Asks[i].qty);
+                      console.log(data.exchanges[k].name);
+                      console.log(i);
+                    }
+
+                    myChart.update();
+                  });
+              }
+              if (data.exchanges[k].name === "OkCoin") {
+                document
+                  .getElementById(`${data.exchanges[k].name}`)
+                  .addEventListener("click", function() {
+                    for (
+                      let i = 0;
+                      i < data.exchanges[k].orderbook.Bids.length;
+                      i++
+                    ) {
+                      myChart.data.datasets[0].data.push(
+                        data.exchanges[k].orderbook.Asks[i].price
+                      );
+                      myChart.data.datasets[1].data.push(
+                        data.exchanges[k].orderbook.Asks[i].qty
+                      );
+                      myChart.data.datasets[2].data.push(
+                        data.exchanges[k].orderbook.Bids[i].price
+                      );
+                      myChart.data.datasets[3].data.push(
+                        data.exchanges[k].orderbook.Bids[i].qty
+                      );
+                      myChart.data.datasets[0].label = "OkCoin Asks Price";
+                      myChart.data.datasets[1].label = "OkCoin Asks Qty";
+                      myChart.data.datasets[2].label = "OkCoin Bids Price";
+                      myChart.data.datasets[3].label = "OkCoin Bids Qty";
+
+                      console.log(data.exchanges[k].orderbook.Asks[i].price);
+                      console.log(data.exchanges[k].orderbook.Asks[i].qty);
+                      console.log(data.exchanges[k].name);
+                      console.log(i);
+                    }
+
+                    myChart.update();
+                  });
+              }
+              if (data.exchanges[k].name === "Poloniex") {
+                document
+                  .getElementById(`${data.exchanges[k].name}`)
+                  .addEventListener("click", function() {
+                    for (
+                      let i = 0;
+                      i < data.exchanges[k].orderbook.Bids.length;
+                      i++
+                    ) {
+                      myChart.data.datasets[0].data.push(
+                        data.exchanges[k].orderbook.Asks[i].price
+                      );
+                      myChart.data.datasets[1].data.push(
+                        data.exchanges[k].orderbook.Asks[i].qty
+                      );
+                      myChart.data.datasets[2].data.push(
+                        data.exchanges[k].orderbook.Bids[i].price
+                      );
+                      myChart.data.datasets[3].data.push(
+                        data.exchanges[k].orderbook.Bids[i].qty
+                      );
+                      myChart.data.datasets[0].label = "Poloniex Asks Price";
+                      myChart.data.datasets[1].label = "Poloniex Asks Qty";
+                      myChart.data.datasets[2].label = "Poloniex Bids Price";
+                      myChart.data.datasets[3].label = "Poloniex Bids Qty";
+
+                      console.log(data.exchanges[k].orderbook.Asks[i].price);
+                      console.log(data.exchanges[k].orderbook.Asks[i].qty);
+                      console.log(data.exchanges[k].name);
+                      console.log(i);
+                    }
+
+                    myChart.update();
+                  });
+              }
+              if (data.exchanges[k].name === "Idex") {
+                document
+                  .getElementById(`${data.exchanges[k].name}`)
+                  .addEventListener("click", function() {
+                    for (
+                      let i = 0;
+                      i < data.exchanges[k].orderbook.Bids.length;
+                      i++
+                    ) {
+                      myChart.data.datasets[0].data.push(
+                        data.exchanges[k].orderbook.Asks[i].price
+                      );
+                      myChart.data.datasets[1].data.push(
+                        data.exchanges[k].orderbook.Asks[i].qty
+                      );
+                      myChart.data.datasets[2].data.push(
+                        data.exchanges[k].orderbook.Bids[i].price
+                      );
+                      myChart.data.datasets[3].data.push(
+                        data.exchanges[k].orderbook.Bids[i].qty
+                      );
+                      myChart.data.datasets[0].label = "Idex Asks Price";
+                      myChart.data.datasets[1].label = "Idex Asks Qty";
+                      myChart.data.datasets[2].label = "Idex Bids Price";
+                      myChart.data.datasets[3].label = "Idex Bids Qty";
+
+                      console.log(data.exchanges[k].orderbook.Asks[i].price);
+                      console.log(data.exchanges[k].orderbook.Asks[i].qty);
+                      console.log(data.exchanges[k].name);
+                      console.log(i);
+                    }
+
+                    myChart.update();
+                  });
+              }
+            }
+
+            document
+              .getElementById("add")
+              .addEventListener("click", function() {
+                myChart.data.labels.push("label");
+                //   console.log(data.exchanges[0].na);
+
+                myChart.update();
+              });
+
+            // var listern =setInterval(function(){
+            //     console.log("hello");
+
+            //         myChart.data.labels.push(data.exchanges[0].orderbook.Bids.length);
+
+            //     myChart.update();
+            // }
+            // ,1000)
+          });
+      }
+    </script>
+  </body>
 </html>
